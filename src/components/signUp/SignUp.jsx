@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { createUser } from "../../firebase-config";
 
 function Copyright(props) {
   return (
@@ -36,13 +38,22 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const email = data.get("email");
+    const password = data.get("password");
+    console.log(data);
+    try {
+      const userCredentials = await createUser(email, password);
+      console.log(userCredentials);
+      if (userCredentials) {
+        navigate("/todoapp");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -131,9 +142,11 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+                <RouterLink to="/signin">
+                  <Link href="#" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </RouterLink>
               </Grid>
             </Grid>
           </Box>

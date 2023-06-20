@@ -1,0 +1,12 @@
+.todo-app {
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.single-todo {
+  width: 400px;
+  background-color: rgb(212, 212, 212);
+  margin: 5px auto;
+}

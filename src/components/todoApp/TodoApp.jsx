@@ -8,7 +8,9 @@ import {
   deleteDoc,
   setDoc,
 } from "firebase/firestore/lite";
+import { auth } from "../../firebase-config";
 import "./todoApp.style.css";
+import { useNavigate } from "react-router-dom";
 
 const TodoApp = () => {
   const [todo, setTodo] = useState("");
@@ -62,6 +64,15 @@ const TodoApp = () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const logOut = (e) => {
+    e.preventDefault();
+    auth.signOut();
+    console.log("user signed out");
+    navigate("/signin");
+  };
+
   return (
     <div className="todo-app">
       <input
@@ -83,6 +94,8 @@ const TodoApp = () => {
           </div>
         );
       })}
+
+      <button onClick={logOut}>Log out</button>
     </div>
   );
 };
